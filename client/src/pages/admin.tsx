@@ -177,7 +177,7 @@ export default function Admin() {
       code: newCode.code.trim(),
       prizeAmount: prizeAmount.toFixed(2),
       usageLimit: usageLimit,
-      expiresAt: expiresAtDate.toISOString(),
+      expiresAt: expiresAtDate,
     };
 
     console.log("Sending gift code data:", data);
