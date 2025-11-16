@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Gift, Wallet, TrendingUp } from "lucide-react";
+import { Gift, Wallet, TrendingUp, Youtube, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Landing() {
@@ -21,14 +21,33 @@ export default function Landing() {
           <Gift className="w-8 h-8 text-primary" />
           <h1 className="text-2xl font-semibold">Prize Panda</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Button
             onClick={handleSubscribe}
             variant="default"
             size="default"
+            className="hidden md:flex"
             data-testid="button-subscribe"
           >
             Subscribe
+          </Button>
+          <Button
+            onClick={handleSubscribe}
+            variant="outline"
+            size="icon"
+            title="Subscribe on YouTube"
+            data-testid="button-youtube"
+          >
+            <Youtube className="w-5 h-5" />
+          </Button>
+          <Button
+            onClick={() => window.location.href = "/donate"}
+            variant="outline"
+            size="icon"
+            title="Support Us"
+            data-testid="button-donate"
+          >
+            <Heart className="w-5 h-5" />
           </Button>
           <Button
             onClick={() => window.location.href = "/login"}

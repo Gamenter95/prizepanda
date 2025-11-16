@@ -10,6 +10,7 @@ import Dashboard from "@/pages/dashboard";
 import Withdraw from "@/pages/withdraw";
 import AdminLogin from "@/pages/admin-login";
 import Admin from "@/pages/admin";
+import Donate from "@/pages/donate";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/withdraw" component={Withdraw} />
       <Route path="/secret" component={AdminLogin} />
       <Route path="/admin" component={Admin} />
+      <Route path="/donate" component={Donate} />
       <Route component={NotFound} />
     </Switch>
   );

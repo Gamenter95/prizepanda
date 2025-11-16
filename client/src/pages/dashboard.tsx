@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Gift, LogOut, Wallet } from "lucide-react";
+import { Gift, LogOut, Wallet, Youtube, Heart } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { User } from "@shared/schema";
 
@@ -74,8 +74,24 @@ export default function Dashboard() {
           <Gift className="w-6 h-6 text-primary" />
           <h1 className="text-xl font-semibold">Prize Panda</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground" data-testid="text-username">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => window.open("https://youtube.com/@PrizePanda", "_blank")}
+            title="Subscribe on YouTube"
+          >
+            <Youtube className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setLocation("/donate")}
+            title="Support Us"
+          >
+            <Heart className="w-4 h-4" />
+          </Button>
+          <span className="text-sm text-muted-foreground hidden md:block" data-testid="text-username">
             {user?.username}
           </span>
           <Button
