@@ -8,7 +8,6 @@ RUN npm install
 
 COPY . .
 
-# Build client + server
 RUN npm run build
 
 EXPOSE 5000
