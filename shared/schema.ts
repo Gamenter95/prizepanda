@@ -61,6 +61,10 @@ export const insertGiftCodeSchema = createInsertSchema(giftCodes).omit({
   usedCount: true,
   isActive: true,
   createdAt: true,
+}).extend({
+  expiresAt: z.string().or(z.date()).transform((val) => 
+    typeof val === 'string' ? new Date(val) : val
+  ),
 });
 
 export const insertWithdrawalRequestSchema = createInsertSchema(withdrawalRequests).omit({
