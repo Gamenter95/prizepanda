@@ -157,11 +157,21 @@ export default function Admin() {
       return;
     }
 
+    const expiresAtDate = new Date(newCode.expiresAt);
+    if (isNaN(expiresAtDate.getTime())) {
+      toast({
+        title: "Validation error",
+        description: "Invalid expiry date",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const data = {
       code: newCode.code.trim(),
-      prizeAmount: prizeAmount.toString(),
+      prizeAmount: prizeAmount.toFixed(2),
       usageLimit: usageLimit,
-      expiresAt: new Date(newCode.expiresAt).toISOString(),
+      expiresAt: expiresAtDate,
     };
 
     createCodeMutation.mutate(data);
