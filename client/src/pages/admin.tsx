@@ -59,24 +59,6 @@ export default function Admin() {
     enabled: !!currentUser?.isAdmin,
   });
 
-  if (userLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  if (userError || !currentUser) {
-    setLocation("/login");
-    return null;
-  }
-
-  if (!currentUser.isAdmin) {
-    setLocation("/dashboard");
-    return null;
-  }
-
   const createCodeMutation = useMutation({
     mutationFn: async (data: any) => {
       return await apiRequest("POST", "/api/admin/gift-codes", data);
@@ -195,12 +177,30 @@ export default function Admin() {
       code: newCode.code.trim(),
       prizeAmount: prizeAmount.toFixed(2),
       usageLimit: usageLimit,
-      expiresAt: expiresAtDate,
+      expiresAt: expiresAtDate.toISOString(),
     };
 
     console.log("Sending gift code data:", data);
     createCodeMutation.mutate(data);
   };
+
+  if (userLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (userError || !currentUser) {
+    setLocation("/login");
+    return null;
+  }
+
+  if (!currentUser.isAdmin) {
+    setLocation("/dashboard");
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
