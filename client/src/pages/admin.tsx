@@ -171,7 +171,7 @@ export default function Admin() {
       code: newCode.code.trim(),
       prizeAmount: prizeAmount.toFixed(2),
       usageLimit: usageLimit,
-      expiresAt: expiresAtDate,
+      expiresAt: expiresAtDate.toISOString(),
     };
 
     createCodeMutation.mutate(data);
