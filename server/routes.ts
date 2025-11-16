@@ -261,13 +261,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/gift-codes", isAdmin, async (req, res) => {
     try {
+      console.log("Received gift code data:", req.body);
       const validatedData = insertGiftCodeSchema.parse(req.body);
+      console.log("Validated gift code data:", validatedData);
       const giftCode = await storage.createGiftCode(validatedData);
       res.json(giftCode);
     } catch (error: any) {
       if (error instanceof z.ZodError) {
+        console.error("Validation errors:", error.errors);
         return res.status(400).json({ message: "Invalid input", errors: error.errors });
       }
+      console.error("Gift code creation error:", error);
       res.status(500).json({ message: "Failed to create gift code" });
     }
   });

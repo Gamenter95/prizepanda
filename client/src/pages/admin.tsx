@@ -39,19 +39,43 @@ export default function Admin() {
     expiresAt: "",
   });
 
-  // No frontend auth check needed - server will enforce via isAdmin middleware
+  const { data: currentUser, isLoading: userLoading, error: userError } = useQuery<User>({
+    queryKey: ["/api/user"],
+    retry: false,
+  });
 
   const { data: users = [] } = useQuery<User[]>({
     queryKey: ["/api/admin/users"],
+    enabled: !!currentUser?.isAdmin,
   });
 
   const { data: giftCodes = [] } = useQuery<GiftCode[]>({
     queryKey: ["/api/admin/gift-codes"],
+    enabled: !!currentUser?.isAdmin,
   });
 
   const { data: withdrawals = [] } = useQuery<WithdrawalRequest[]>({
     queryKey: ["/api/admin/withdrawals"],
+    enabled: !!currentUser?.isAdmin,
   });
+
+  if (userLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (userError || !currentUser) {
+    setLocation("/login");
+    return null;
+  }
+
+  if (!currentUser.isAdmin) {
+    setLocation("/dashboard");
+    return null;
+  }
 
   const createCodeMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -171,9 +195,10 @@ export default function Admin() {
       code: newCode.code.trim(),
       prizeAmount: prizeAmount.toFixed(2),
       usageLimit: usageLimit,
-      expiresAt: expiresAtDate.toISOString(),
+      expiresAt: expiresAtDate,
     };
 
+    console.log("Sending gift code data:", data);
     createCodeMutation.mutate(data);
   };
 
