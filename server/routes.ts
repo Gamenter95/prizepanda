@@ -10,6 +10,7 @@ import { z } from "zod";
 declare module "express-session" {
   interface SessionData {
     userId?: string;
+    isAdminAuthenticated?: boolean;
   }
 }
 
@@ -23,6 +24,10 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
 const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  if (!req.session.isAdminAuthenticated) {
+    return res.status(403).json({ message: "Forbidden: Admin password required" });
   }
 
   try {
@@ -228,6 +233,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         
         req.session.userId = user.id;
+        req.session.isAdminAuthenticated = true;
         
         storage.setUserAdmin(user.id, true).then(() => {
           res.json({ message: "Admin access granted" });

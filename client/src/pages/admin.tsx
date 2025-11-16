@@ -192,7 +192,16 @@ export default function Admin() {
     );
   }
 
-  if (userError || !currentUser) {
+  if (userError) {
+    if ((userError as any).message?.includes("Admin password required")) {
+      setLocation("/secret");
+      return null;
+    }
+    setLocation("/login");
+    return null;
+  }
+
+  if (!currentUser) {
     setLocation("/login");
     return null;
   }
