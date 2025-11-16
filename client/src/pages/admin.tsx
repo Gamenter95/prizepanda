@@ -159,9 +159,9 @@ export default function Admin() {
 
     const data = {
       code: newCode.code.trim(),
-      prizeAmount: prizeAmount.toFixed(2),
+      prizeAmount: prizeAmount.toString(),
       usageLimit: usageLimit,
-      expiresAt: new Date(newCode.expiresAt).toISOString(),
+      expiresAt: newCode.expiresAt,
     };
 
     createCodeMutation.mutate(data);
