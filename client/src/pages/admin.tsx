@@ -67,9 +67,10 @@ export default function Admin() {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/gift-codes"] });
     },
     onError: (error: any) => {
+      console.error("Gift code creation error:", error);
       toast({
         title: "Failed to create gift code",
-        description: error.message,
+        description: error.message || "An error occurred while creating the gift code",
         variant: "destructive",
       });
     },
@@ -127,10 +128,39 @@ export default function Admin() {
   const handleCreateCode = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!newCode.code || !newCode.prizeAmount || !newCode.usageLimit || !newCode.expiresAt) {
+      toast({
+        title: "Validation error",
+        description: "All fields are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const usageLimit = parseInt(newCode.usageLimit);
+    if (isNaN(usageLimit) || usageLimit < 1) {
+      toast({
+        title: "Validation error",
+        description: "Usage limit must be a positive number",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const prizeAmount = parseFloat(newCode.prizeAmount);
+    if (isNaN(prizeAmount) || prizeAmount <= 0) {
+      toast({
+        title: "Validation error",
+        description: "Prize amount must be a positive number",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const data = {
-      code: newCode.code,
-      prizeAmount: newCode.prizeAmount,
-      usageLimit: parseInt(newCode.usageLimit),
+      code: newCode.code.trim(),
+      prizeAmount: prizeAmount.toFixed(2),
+      usageLimit: usageLimit,
       expiresAt: new Date(newCode.expiresAt).toISOString(),
     };
 
