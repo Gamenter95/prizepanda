@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "cd client && npm install && npm run build && cd .. && tsc",
+    "build": "cd client && npm install && npm run build && cd .. && tsc -p tsconfig.server.json",
     "dev": "NODE_ENV=development tsx server/index.ts",
     "start": "NODE_ENV=production node server/dist/index.js",
     "check": "tsc",
